@@ -13,7 +13,4 @@ spec:
         name: go-first
   interval: 1m0s
   targetNamespace: ndtech-staging
-  values:
-    image: 
-    tag: 0.0.1
 
