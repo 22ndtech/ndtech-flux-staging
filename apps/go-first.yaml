@@ -1,18 +1,14 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
 metadata:
   name: go-first
   namespace: flux-system
 spec:
-  chart:
-    spec:
-      chart: ./deploy/
-      sourceRef:
-        kind: GitRepository
-        name: go-first
   interval: 1m0s
-  targetNamespace: ndtech-staging
-  values:
-    image: 
-    tag: 0.0.1
+  path: ./deploy
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: go-first
+  validation: client
