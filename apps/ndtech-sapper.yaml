@@ -8,11 +8,12 @@ spec:
   chart:
     spec:
       chart: ./deploy/ndtech-sapper
-      version: 0.0.1
+      version: 0.0.1.1
       sourceRef:
         kind: GitRepository
         name: ndtech-sapper
         namespace: flux-system
       interval: 1m
   values:
-    replicaCount: 2
+    deployment:
+      replicas: 2
