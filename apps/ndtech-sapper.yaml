@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: ./deploy/ndtech-sapper
-      version: 0.0.1.6
+      version: 0.0.1.7
       sourceRef:
         kind: GitRepository
         name: ndtech-sapper
@@ -18,4 +18,4 @@ spec:
     deployment:
       replicas: 1
       namespace: ndtech
-      imageVersion: 0.0.2
+      imageVersion: 0.0.3
