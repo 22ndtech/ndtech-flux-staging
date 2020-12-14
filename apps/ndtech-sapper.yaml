@@ -9,11 +9,11 @@ spec:
   chart:
     spec:
       chart: ./deploy/ndtech-sapper
-      version: 0.0.1.7
+      version: 0.0.1.9
       sourceRef:
         kind: GitRepository
         name: ndtech-sapper
-        namespace: flux-system
+        namespace: ndtech
       interval: 1m
   values:
     deployment:
