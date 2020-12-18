@@ -31,8 +31,7 @@ metadata:
 spec:
   selector:
     app: ndtech-sapper
-  type: LoadBalancer
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 3000
+
