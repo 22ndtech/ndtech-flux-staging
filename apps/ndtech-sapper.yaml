@@ -61,19 +61,20 @@ spec:
                 number: 80
             path: /
             pathType: ImplementationSpecific
-# ---
-# apiVersion: cert-manager.io/v1
-# kind: Certificate
-# metadata:
-#   name: jaackd-reality-ca-staging
-#   namespace: ndtech
-# spec:
-#   secretName: letsencrypt-staging
-#   dnsNames:
-#   - jaackdreality.com
-#   issuerRef:
-#     name: letsencrypt-staging
-#     kind: Issuer
-#     group: cert-manager.io
-#   # isCA: true
-#   commonName: jaackdreality.com
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jaackd-reality-ca-staging
+  namespace: ndtech
+spec:
+  secretName: letsencrypt-staging
+  dnsNames:
+  - jaackdreality.com
+  - www.jaackdreality.com
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+    group: cert-manager.io
+  isCA: true
+  commonName: jaackdreality.com
