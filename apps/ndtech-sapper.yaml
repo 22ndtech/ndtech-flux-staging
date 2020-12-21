@@ -27,7 +27,7 @@ metadata:
   name: ndtech-sapper
   namespace: ndtech
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com
+    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com
 spec:
   selector:
     app: ndtech-sapper
@@ -53,6 +53,16 @@ spec:
         - www.jaackdreality.com
   rules:
     - host: jaackdreality.com
+      http:
+        paths:
+          - backend:
+             service:
+              name: ndtech-sapper
+              port:
+                number: 80
+            path: /
+            pathType: ImplementationSpecific
+    - host: www.jaackdreality.com
       http:
         paths:
           - backend:
