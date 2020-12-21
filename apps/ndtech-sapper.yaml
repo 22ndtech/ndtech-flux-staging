@@ -50,6 +50,7 @@ spec:
     - secretName: letsencrypt-staging
       hosts:
         - jaackdreality.com
+        - www.jaackdreality.com
   rules:
     - host: jaackdreality.com
       http:
