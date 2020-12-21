@@ -41,7 +41,7 @@ metadata:
   name: jaackdreality-com
   namespace: ndtech
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com
+    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-staging
