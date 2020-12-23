@@ -28,3 +28,10 @@ spec:
       roles:
         - name: readWrite
           db: test
+    - name: ndtech-sapper
+      db: ndtech-sapper
+      passwordSecretRef:
+        name: ndtech-sapper-secret
+      roles:
+        - name: readWrite
+          db: ndtech-sapper
