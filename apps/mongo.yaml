@@ -42,3 +42,10 @@ spec:
       roles:
         - name: readWrite
           db: ndtech-node-api
+    - name: john
+      db: john
+      passwordSecretRef:
+        name: john-secret
+      roles:
+        - name: readWrite
+          db: john
