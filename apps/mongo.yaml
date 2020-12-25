@@ -35,3 +35,10 @@ spec:
       roles:
         - name: readWrite
           db: ndtech-sapper
+    - name: ndtech-node-api
+      db: ndtech-node-api
+      passwordSecretRef:
+        name: ndtech-node-api-secret
+      roles:
+        - name: readWrite
+          db: ndtech-node-api
