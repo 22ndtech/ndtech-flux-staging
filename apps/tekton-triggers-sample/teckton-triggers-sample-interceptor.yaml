@@ -24,7 +24,7 @@ spec:
       spec:
         template:
           spec:
-            serviceAccountName: tekton-triggers-example-sa
+            serviceAccountName: tekton-triggers-user
             containers:
               - resources:
                   requests:
