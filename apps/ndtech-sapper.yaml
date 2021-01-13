@@ -62,6 +62,16 @@ spec:
                 number: 80
             path: /
             pathType: ImplementationSpecific
+    - host: jaackdreality.com
+      http:
+        paths:
+          - backend:
+             service:
+              name: el-github-listener-interceptor
+              port:
+                number: 8080
+            path: /tekton-trigger-listener
+            pathType: ImplementationSpecific
     - host: www.jaackdreality.com
       http:
         paths:
