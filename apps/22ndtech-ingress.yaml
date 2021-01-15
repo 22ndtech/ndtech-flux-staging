@@ -8,10 +8,10 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: 22ndtech.com, www.22ndtech.com
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   tls:
-    - secretName: letsencrypt-staging
+    - secretName: letsencrypt
       hosts:
         - 22ndtech.com
         - www.22ndtech.com

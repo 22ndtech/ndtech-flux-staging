@@ -3,15 +3,15 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: 22ndtech-ca-staging
+  name: 22ndtech-ca
   namespace: ndtech
 spec:
-  secretName: letsencrypt-staging
+  secretName: letsencrypt
   dnsNames:
   - 22ndtech.com
   - www.22ndtech.com
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt
     kind: ClusterIssuer
     group: cert-manager.io
   isCA: true
