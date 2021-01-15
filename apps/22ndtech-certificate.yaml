@@ -8,7 +8,7 @@ metadata:
 spec:
   secretName: letsencrypt-staging
   dnsNames:
-  - 22ntech.com
+  - 22ndtech.com
   - www.22ndtech.com
   issuerRef:
     name: letsencrypt-staging
