@@ -1,0 +1,51 @@
+---
+# The getting-started Pipeline will run through several tasks:
+# - source is pulled from git
+# - conditions say go test must pass before moving on
+# - source is built into an image by img
+# - image output is pushed to ECR
+# - cloudevent emitted
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: getting-started-pipeline
+  namespace: ndtech
+spec:
+  resources:
+    - name: source-repo
+      type: git
+    - name: image-source
+      type: image
+    - name: event-to-sink
+      type: cloudEvent
+  tasks:
+    - name: build-docker-image
+      taskRef:
+        name: build-docker-image
+      conditions:
+      - conditionRef: "go-test"
+        resources:
+          - name: source-repo
+            resource: source-repo
+      params:
+        - name: pathToContext
+          value: /workspace/source-repo
+      resources:
+        inputs:
+          - name: source-repo
+            resource: source-repo
+        outputs:
+          - name: builtImage
+            resource: image-source
+    - name: deploy-locally
+      taskRef:
+        name: deploy-locally
+      resources:
+        inputs:
+          - name: image-source
+            resource: image-source
+            from:
+              - build-docker-image
+        outputs:
+          - name: event-to-sink
+            resource: event-to-sink

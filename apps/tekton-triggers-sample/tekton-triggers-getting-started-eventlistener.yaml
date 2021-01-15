@@ -1,0 +1,13 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: getting-started-listener
+  namespace: ndtech
+spec:
+  serviceAccountName: tekton-triggers-admin
+  triggers:
+    - bindings:
+      - ref: getting-started-pipelinebinding
+      template:
+        ref: getting-started-triggertemplate

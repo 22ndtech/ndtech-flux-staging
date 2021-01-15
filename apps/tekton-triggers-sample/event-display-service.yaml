@@ -1,0 +1,18 @@
+---
+# Finally, we need something to receive our cloudevent announcing success!
+# That is this services only purpose
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-display
+  namespace: ndtech
+  labels:
+    app: event-display
+spec:
+  type: ClusterIP
+  ports:
+    - name: listener
+      port: 8080
+      protocol: TCP
+  selector:
+    app: event-display

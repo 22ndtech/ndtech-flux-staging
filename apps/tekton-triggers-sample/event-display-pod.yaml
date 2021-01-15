@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: event-display
+  namespace: ndtech
+  labels:
+    app: event-display
+spec:
+  hostname: event-display
+  containers:
+  - image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display
+    name: web

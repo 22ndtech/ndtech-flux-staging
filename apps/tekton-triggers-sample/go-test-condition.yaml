@@ -1,0 +1,15 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: go-test
+  namespace: ndtech
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  check:
+    image: golang
+    command: ["go"]
+    workingDir: "$(resources.source-repo.path)"
+    args: ['test', "./..."]
