@@ -3,6 +3,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: create-ingress
+  namespace: ndtech
 spec:
   volumes:
   - name: work
