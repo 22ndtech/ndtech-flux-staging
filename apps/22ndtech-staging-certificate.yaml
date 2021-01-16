@@ -11,7 +11,7 @@ spec:
   - 22ndtech.com
   - www.22ndtech.com
   issuerRef:
-    name: letsencrypt-staging-22ndtech
+    name: letsencrypt-staging
     kind: ClusterIssuer
     group: cert-manager.io
   isCA: true
