@@ -9,6 +9,6 @@ spec:
     - name: gitrevision
       value: $(body.head_commit.id)
     - name: namespace
-      value: getting-started
+      value: ndtech
     - name: gitrepositoryurl
       value: "https://github.com/$(body.repository.full_name)"
