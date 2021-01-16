@@ -11,7 +11,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   tls:
-    - secretName: letsencrypt
+    - secretName: letsencrypt-22ndtech
       hosts:
         - 22ndtech.com
         - www.22ndtech.com

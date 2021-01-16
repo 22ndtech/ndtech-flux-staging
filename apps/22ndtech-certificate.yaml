@@ -6,7 +6,7 @@ metadata:
   name: 22ndtech-ca
   namespace: ndtech
 spec:
-  secretName: letsencrypt
+  secretName: letsencrypt-22ndtech
   dnsNames:
   - 22ndtech.com
   - www.22ndtech.com
