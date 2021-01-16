@@ -27,7 +27,7 @@ metadata:
   name: ndtech-sapper
   namespace: ndtech
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com
+    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com, tekton.jaackdreality.com
 spec:
   selector:
     app: ndtech-sapper
@@ -41,7 +41,7 @@ metadata:
   name: jaackdreality-com
   namespace: ndtech
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com
+    external-dns.alpha.kubernetes.io/hostname: jaackdreality.com, www.jaackdreality.com, tekton.jaackdreality.com
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt
@@ -51,6 +51,7 @@ spec:
       hosts:
         - jaackdreality.com
         - www.jaackdreality.com
+        - tekton.jaackdreality.com
   rules:
     - host: jaackdreality.com
       http:
@@ -62,16 +63,6 @@ spec:
                 number: 80
             path: /
             pathType: ImplementationSpecific
-    - host: jaackdreality.com
-      http:
-        paths:
-          - backend:
-             service:
-              name: el-getting-started-listener
-              port:
-                number: 8080
-            path: /tekton-trigger-listener
-            pathType: ImplementationSpecific
     - host: www.jaackdreality.com
       http:
         paths:
@@ -80,6 +71,16 @@ spec:
               name: ndtech-sapper
               port:
                 number: 80
+            path: /
+            pathType: ImplementationSpecific
+    - host: tekton.jaackdreality.com
+      http:
+        paths:
+          - backend:
+             service:
+              name: el-getting-started-listener
+              port:
+                number: 8080
             path: /
             pathType: ImplementationSpecific
 ---
@@ -93,6 +94,7 @@ spec:
   dnsNames:
   - jaackdreality.com
   - www.jaackdreality.com
+  - tekton.jaackdreality.com
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
@@ -110,6 +112,7 @@ spec:
   dnsNames:
   - jaackdreality.com
   - www.jaackdreality.com
+  - tekton.jaackdreality.com
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
