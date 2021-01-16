@@ -12,6 +12,7 @@ rules:
   - eventlisteners
   - triggerbindings
   - triggertemplates
+  - triggers
   verbs:
   - get
   - list
