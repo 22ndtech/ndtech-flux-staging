@@ -11,3 +11,21 @@ spec:
       - ref: getting-started-pipelinebinding
       template:
         ref: getting-started-triggertemplate
+  resources:
+    kubernetesResource:
+      serviceType: LoadBalancer
+      spec:
+        template:
+          metadata:
+            labels:
+              app: getting-started-listener
+          spec:
+            serviceAccountName: tekton-triggers-admin
+            containers:
+              - resources:
+                  requests:
+                    memory: "64Mi"
+                    cpu: "250m"
+                  limits:
+                    memory: "128Mi"
+                    cpu: "500m"
