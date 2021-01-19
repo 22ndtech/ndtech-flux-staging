@@ -7,7 +7,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: ndtech-staging-pipeline
+  name: tekton-pipeline
   namespace: ndtech-staging
 spec:
   resources:

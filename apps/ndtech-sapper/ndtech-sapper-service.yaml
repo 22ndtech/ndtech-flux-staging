@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ndtech-sapper
+  namespace: ndtech-staging
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: ndtech-staging.jaackdreality.com, ndtech-staging.www.jaackdreality.com
+spec:
+  selector:
+    app: ndtech-sapper
+  ports:
+    - port: 80
+      targetPort: 3000

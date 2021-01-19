@@ -3,7 +3,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: create-webhook
-  namespace: ndtech
+  namespace: ndtech-staging
 spec:
   volumes:
   - name: github-secret
