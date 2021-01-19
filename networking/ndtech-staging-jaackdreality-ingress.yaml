@@ -2,16 +2,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ndtech-staging-ingress
+  name: ndtech-staging-jaackdreality-com
   namespace: ndtech-staging
   annotations:
     external-dns.alpha.kubernetes.io/hostname: ndtech-staging.jaackdreality.com, ndtech-staging.www.jaackdreality.com, ndtech-staging.tekton.jaackdreality.com
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   tls:
-    - secretName: letsencrypt-staging
+    - secretName: letsencrypt
       hosts:
         - ndtech-staging.jaackdreality.com
         - ndtech-staging.www.jaackdreality.com
