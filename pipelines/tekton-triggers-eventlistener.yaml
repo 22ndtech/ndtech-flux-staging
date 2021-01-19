@@ -13,7 +13,7 @@ spec:
         ref: tekton-triggers-triggertemplate
   resources:
     kubernetesResource:
-      serviceType: LoadBalancer
+      serviceType: ClusterIP
       spec:
         template:
           metadata:
