@@ -1,15 +1,14 @@
 ---
-# The getting-started Pipeline will run through several tasks:
+# The ndtech-staging Pipeline will run through several tasks:
 # - source is pulled from git
-# - conditions say go test must pass before moving on
-# - source is built into an image by img
-# - image output is pushed to ECR
+# - source is built into an image
+# - image output is pushed to dockerhub
 # - cloudevent emitted
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: getting-started-pipeline
-  namespace: ndtech
+  name: ndtech-staging-pipeline
+  namespace: ndtech-staging
 spec:
   resources:
     - name: source-repo
@@ -32,15 +31,12 @@ spec:
         outputs:
           - name: builtImage
             resource: image-source
-    - name: deploy-locally
+    - name: deploy-to-ndtech-staging
       taskRef:
-        name: deploy-locally
+        name: deploy-to-ndtech-staging
       resources:
         inputs:
           - name: image-source
             resource: image-source
             from:
               - build-docker-image
-        outputs:
-          - name: event-to-sink
-            resource: event-to-sink

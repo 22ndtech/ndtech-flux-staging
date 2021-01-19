@@ -2,15 +2,15 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: getting-started-listener
-  namespace: ndtech
+  name: tekton-triggers-listener
+  namespace: ndtech-staging
 spec:
   serviceAccountName: tekton-triggers-admin
   triggers:
     - bindings:
-      - ref: getting-started-pipelinebinding
+      - ref: tekton-triggers-pipelinebinding
       template:
-        ref: getting-started-triggertemplate
+        ref: tekton-triggers-triggertemplate
   resources:
     kubernetesResource:
       serviceType: LoadBalancer
@@ -18,7 +18,7 @@ spec:
         template:
           metadata:
             labels:
-              app: getting-started-listener
+              app: tekton-triggers-listener
           spec:
             serviceAccountName: tekton-triggers-admin
             containers:

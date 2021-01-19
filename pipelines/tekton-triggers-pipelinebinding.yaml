@@ -2,13 +2,13 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: getting-started-pipelinebinding
-  namespace: ndtech
+  name: tekton-triggers-pipelinebinding
+  namespace: ndtech-staging
 spec:
   params:
     - name: gitrevision
       value: $(body.head_commit.id)
     - name: namespace
-      value: ndtech
+      value: ndtech-staging
     - name: gitrepositoryurl
       value: "https://github.com/$(body.repository.full_name)"

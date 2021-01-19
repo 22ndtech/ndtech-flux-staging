@@ -2,8 +2,8 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: getting-started-triggertemplate
-  namespace: ndtech
+  name: tekton-triggers-triggertemplate
+  namespace: ndtech-staging
 spec:
   params:
     - name: gitrevision
@@ -17,12 +17,12 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        name: getting-started-pipeline-run-$(uid)
+        name: tekton-pipeline-run-$(uid)
         namespace: $(tt.params.namespace)
       spec:
         serviceAccountName: tekton-triggers-admin
         pipelineRef:
-          name: getting-started-pipeline
+          name: tekton-pipeline
         resources:
           - name: source-repo
             resourceSpec:
@@ -38,9 +38,3 @@ spec:
               params:
                 - name: url
                   value: DOCKERREPO-REPLACEME  # docker-repo-location.com/repo:getting-started
-          - name: event-to-sink
-            resourceSpec:
-              type: cloudEvent
-              params:
-                - name: targetURI
-                  value: http://event-display.getting-started.svc.cluster.local
