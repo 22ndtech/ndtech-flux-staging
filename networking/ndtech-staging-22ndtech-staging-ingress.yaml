@@ -5,7 +5,7 @@ metadata:
   name: ndtech-staging.22ndtech-com
   namespace: ndtech-staging
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: ndtech-staging.22ndtech.com, ndtech-staging.www.22ndtech.com
+    external-dns.alpha.kubernetes.io/hostname: ndtech-staging.22ndtech.com, ndtech-staging.www.22ndtech.com, ndtech-staging.api.22ndtech.com
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-staging
@@ -15,6 +15,7 @@ spec:
       hosts:
         - ndtech-staging.22ndtech.com
         - ndtech-staging.www.22ndtech.com
+        - ndtech-staging.api.22ndtech.com
   rules:
     - host: ndtech-staging.22ndtech.com
       http:
@@ -32,6 +33,16 @@ spec:
           - backend:
              service:
               name: ndtech-website
+              port:
+                number: 80
+            path: /
+            pathType: ImplementationSpecific
+    - host: ndtech-staging.api.22ndtech.com
+      http:
+        paths:
+          - backend:
+             service:
+              name: ndtech-node-api
               port:
                 number: 80
             path: /
