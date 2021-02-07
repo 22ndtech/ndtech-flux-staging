@@ -10,6 +10,7 @@ spec:
   dnsNames:
   - ndtech-staging.22ndtech.com
   - ndtech-staging.www.22ndtech.com
+  - ndtech-staging.api.22ndtech.com
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
