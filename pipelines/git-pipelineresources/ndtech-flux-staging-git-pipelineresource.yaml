@@ -1,0 +1,13 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: ndtech-flux-staging
+  namespace: ndtech-staging
+spec:
+  params:
+  - name: url
+    value: https://github.com/22ndtech/ndtech-website
+  - name: revision
+    value: main
+  type: git
