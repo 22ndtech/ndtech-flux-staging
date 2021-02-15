@@ -15,8 +15,6 @@ spec:
       type: git
     - name: image-source
       type: image
-    - name: event-to-sink
-      type: cloudEvent
   tasks:
     - name: build-docker-image
       taskRef:
