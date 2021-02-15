@@ -3,11 +3,11 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: ndtech-website-git
-  namespace: ndtech
+  namespace: ndtech-staging
 spec:
   params:
   - name: url
-    value: https://github.com/jjhegedus/ndtech-website
+    value: https://github.com/22ndtech/ndtech-website
   - name: revision
     value: main
   type: git
