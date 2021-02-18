@@ -2,15 +2,22 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: tekton-triggers-listener
+  name: github
   namespace: ndtech-staging
 spec:
   serviceAccountName: tekton-triggers-admin
   triggers:
     - bindings:
-      - ref: tekton-triggers-pipelinebinding
+      - ref: github
       template:
-        ref: tekton-triggers-triggertemplate
+        ref: github
+      interceptors:
+        - github:
+            secretRef:
+              secretName: github-secret
+              secretKey: secretToken
+            eventTypes:
+              - push
   resources:
     kubernetesResource:
       serviceType: ClusterIP

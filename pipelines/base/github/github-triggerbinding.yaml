@@ -1,0 +1,20 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: github
+  namespace: ndtech-staging
+spec:
+  params:
+    - name: gitRevision
+      value: $(body.head_commit.id)
+    - name: gitrepositoryurl
+      value: "https://github.com/$(body.repository.full_name)"
+    - name: namespace
+      value: ndtech-staging
+    - name: repo-name
+      value: $(body.repository.name)
+    - name: gitHubOrg
+      value: $(body.organization.login)
+    - name: gitHubSender
+      value: $(body.sender.login)
