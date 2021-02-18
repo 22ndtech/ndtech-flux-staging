@@ -42,7 +42,7 @@ spec:
         paths:
           - backend:
              service:
-              name: el-tekton-triggers-listener
+              name: el-github-listener
               port:
                 number: 8080
             path: /
