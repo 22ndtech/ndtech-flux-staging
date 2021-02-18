@@ -7,9 +7,23 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: tekton-pipeline
+  name: github
   namespace: ndtech-staging
 spec:
+  params:
+    - name: environment
+      default: ndtech-staging
+    - name: app-name
+      default: ndtech
+    - name: gitHubOrg
+      default: 22ndtech
+    - name: gitHubRepo
+      default: ndtech
+    - name: gitHubUser
+      default: 22ndtech
+    - name: appImage
+      default: ndtech-website
+    - name: buildRevision
   resources:
     - name: source-repo
       type: git
@@ -32,6 +46,21 @@ spec:
     - name: deploy-to-ndtech-staging
       taskRef:
         name: deploy-to-ndtech-staging
+      params:
+        - name: environment
+          value: "$(params.environment)"
+        - name: app-name
+          value: "$(params.app-name)"
+        - name: gitHubOrg
+          value: "$(params.gitHubOrg)"
+        - name: gitHubRepo
+          value: "$(params.gitHubRepo)"
+        - name: gitHubUser
+          value: "$(params.gitHubUser)"
+        - name: appImage
+          value: "$(params.appImage)"
+        - name: buildRevision
+          value: "$(params.buildRevision)"
       resources:
         inputs:
           - name: image-source

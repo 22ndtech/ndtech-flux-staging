@@ -1,0 +1,63 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: github
+  namespace: ndtech-staging
+spec:
+  params:
+    - name: gitRevision
+      description: The git revision
+      default: master
+    - name: gitrepositoryurl
+      description: The git repository url
+    - name: namespace
+      description: The namespace to create the resources
+    - name: repo-name
+      description: The name of the application
+    - name: image-version
+      description: The version of the container image to build
+    - name: gitHubOrg
+      description: The GitHub Organization that owns the application
+    - name: gitHubSender
+      description: The GitHub user that applied the change. The account that merged the pull request.
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        name: tekton-pipeline-run-$(uid)
+        namespace: $(tt.params.namespace)
+      spec:
+        serviceAccountName: tekton-triggers-admin
+        pipelineRef:
+          name: github
+        params:
+          - name: environment
+            value: ndtech-staging
+          - name: app-name
+            value: $(tt.params.repo-name)
+          - name: gitHubOrg
+            value: $(tt.params.gitHubOrg)
+          - name: gitHubRepo
+            value: $(tt.params.repo-name)
+          - name: gitHubUser
+            value: $(tt.params.gitHubSender)
+          - name: appImage
+            value: $(tt.params.repo-name)
+          - name: buildRevision
+            value: $(tt.params.gitRevision)
+        resources:
+          - name: source-repo
+            resourceSpec:
+              type: git
+              params:
+              - name: buildRevision
+                value: $(tt.params.gitRevision)
+              - name: url
+                value: $(tt.params.gitrepositoryurl)
+          - name: image-source
+            resourceSpec:
+              type: image
+              params:
+                - name: url
+                  value: $(tt.params.gitHubOrg)/$(tt.params.repo-name):$(tt.params.gitRevision)  # docker-repo-location.com/repo:getting-started
