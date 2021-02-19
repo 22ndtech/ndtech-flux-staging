@@ -10,6 +10,9 @@ metadata:
   name: github
   namespace: ndtech-staging
 spec:
+  workspaces:
+    - name: app-source
+    - name: config-source
   params:
     - name: environment
       default: ndtech-staging
@@ -30,19 +33,6 @@ spec:
     - name: image-source
       type: image
   tasks:
-    - name: build-docker-image
-      taskRef:
-        name: build-docker-image
-      params:
-        - name: pathToContext
-          value: /workspace/source-repo
-      resources:
-        inputs:
-          - name: source-repo
-            resource: source-repo
-        outputs:
-          - name: builtImage
-            resource: image-source
     - name: deploy-to-ndtech-staging
       taskRef:
         name: deploy-to-ndtech-staging
@@ -65,5 +55,8 @@ spec:
         inputs:
           - name: image-source
             resource: image-source
-            from:
-              - build-docker-image
+      workspaces:
+        - name: app-source
+          workspace: app-source
+        - name: config-source
+          workspace: config-source

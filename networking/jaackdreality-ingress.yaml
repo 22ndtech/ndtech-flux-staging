@@ -42,7 +42,7 @@ spec:
         paths:
           - backend:
              service:
-              name: el-github-listener
+              name: el-github
               port:
                 number: 8080
             path: /
