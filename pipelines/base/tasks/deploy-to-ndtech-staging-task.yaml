@@ -13,8 +13,13 @@ spec:
   - name: gitHubUser
   - name: appImage
   - name: buildRevision
+  resources:
+    inputs:
+    - name: image-source
+      type: image
   workspaces:
-  - name: app-source
+    - name: app-source
+    - name: config-source
   stepTemplate:
     name: stepTemplate
     envFrom:
@@ -25,26 +30,30 @@ spec:
 
   - name: git-checkout
     image: alpine/git:v2.26.2
-    workingDir: "$(workspaces.app-source.path)"
+    workingDir: "$(workspaces.config-source.path)"
     script: |
       git init
       echo "secretToken"
       echo $secretToken
-      git remote add origin https://22ndtech/ndtech-flux-staging.git
+      git remote add origin https://github.com/22ndtech/ndtech-flux-staging.git
       git fetch --depth 1 origin main
       git checkout main
+      pwd
+      ls
 
   - name: update-yaml
     image: alpine/git:v2.26.2
-    workingDir: "$(workspaces.app-source.path)/ndtech-flux-staging"
+    workingDir: "$(workspaces.config-source.path)"
     script: |
       #!/usr/bin/env sh
       set -e
       echo "update-yaml"
       # echo "updating $(inputs.params.environment) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
-      sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" ./apps/$(inputs.params.app-name)/$(inputs.params.app-name)-helmrelease.yaml
+      # sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" ./apps/$(inputs.params.app-name)/$(inputs.params.app-name)-helmrelease.yaml
       # echo "updating all pods in $(inputs.params.environment) to revision $(inputs.params.buildRevision)"
       # sed -i "s#revision: \"[a-zA-Z0-9]\\+\"#revision: \"$(inputs.params.buildRevision)\"#" app.yaml
+      ls
+      pwd
 
   - name: commit-push-changes-gitops
     image: alpine/git:v2.26.2
@@ -61,10 +70,10 @@ spec:
       # ssh-add ~/.ssh/id_*
       # git push origin master
       
-  # - name: wait-for-argocd-rollout
-    # image: argoproj/argocd:v1.7.7
-    # script: |
-      # !/usr/bin/env sh
-      # set -e
-      # argocd app sync $(inputs.params.argo-app-name) --insecure
-      # argocd app wait $(inputs.params.argo-app-name) --sync --health --operation --insecure
+  - name: wait-for-argocd-rollout
+    image: argoproj/argocd:v1.7.7
+    script: |
+      !/usr/bin/env sh
+      set -e
+      argocd app sync $(inputs.params.argo-app-name) --insecure
+      argocd app wait $(inputs.params.argo-app-name) --sync --health --operation --insecure

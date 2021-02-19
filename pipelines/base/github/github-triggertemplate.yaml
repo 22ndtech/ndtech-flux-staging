@@ -61,3 +61,8 @@ spec:
               params:
                 - name: url
                   value: $(tt.params.gitHubOrg)/$(tt.params.repo-name):$(tt.params.gitRevision)  # docker-repo-location.com/repo:getting-started
+        workspaces:
+        - name: app-source
+          emptyDir: {}
+        - name: config-source
+          emptyDir: {}
