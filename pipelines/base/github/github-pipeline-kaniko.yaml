@@ -32,20 +32,18 @@ spec:
       type: git
     - name: image-source
       type: image
+
   tasks:
+
     - name: clone-app-repo
       taskRef:
-        name: clone
+        name: git-clone
       workspaces:
-      - name: app-source
+      - name: output
         workspace: app-source
       params:
-        - name: gitHubOrg
-          value: "$(params.gitHubOrg)"
-        - name: gitHubRepo
-          value: "$(params.gitHubRepo)"
-        - name: buildRevision
-          value: "$(params.buildRevision)"
+        - name: url
+          value: https://github.com/$(params.gitHubOrg)/$(params.gitHubRepo).git
         
     - name: clone-config-repo
       taskRef:
@@ -56,6 +54,8 @@ spec:
       params:
       - name: url
         value: https://github.com/$(params.gitHubOrg)/ndtech-flux-staging.git
+      - name: revision
+        value: main
 
     - name: get-app-version
       params:
@@ -69,48 +69,32 @@ spec:
       - name: app-source
         workspace: app-source
 
-    - name: build-docker-image
+    - name: build-and-push-docker-image
       taskRef:
-        name: build-docker-image
+        name: kaniko
       runAfter:
         - get-app-version
       params:
-        - name: pathToContext
-          value: .
-        - name: app-version
-          value: "$(tasks.get-app-version.results.app-version)"
+        - name: IMAGE
+          value: "$(params.gitHubOrg)/$(params.gitHubRepo):$(tasks.get-app-version.results.app-version)"
+        - name: BUILDER_IMAGE
+          value: gcr.io/kaniko-project/executor:v1.5.0-debug
       workspaces:
-      - name: app-source
+      - name: source
         workspace: app-source
 
     - name: deploy-to-ndtech-staging
       taskRef:
         name: deploy-to-ndtech-staging
       runAfter:
-        - build-docker-image
+        - build-and-push-docker-image
       params:
-        - name: environment
-          value: "$(params.environment)"
-        - name: app-name
-          value: "$(params.app-name)"
-        - name: gitHubOrg
-          value: "$(params.gitHubOrg)"
-        - name: gitHubRepo
-          value: "$(params.gitHubRepo)"
-        - name: gitHubUser
-          value: "$(params.gitHubUser)"
-        - name: appImage
-          value: "$(params.appImage)"
         - name: buildRevision
           value: "$(params.buildRevision)"
+        - name: app-name
+          value: "$(params.app-name)"
         - name: app-version
           value: "$(tasks.get-app-version.results.app-version)"
-      resources:
-        inputs:
-          - name: image-source
-            resource: image-source
       workspaces:
-        - name: app-source
-          workspace: app-source
         - name: config-source
           workspace: config-source

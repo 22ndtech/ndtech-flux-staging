@@ -9,6 +9,9 @@ spec:
     - name: gitRevision
       description: The git revision
       default: master
+    - name: gitBranch
+      description: The git branch
+      default: master
     - name: gitrepositoryurl
       description: The git repository url
     - name: namespace
@@ -63,6 +66,22 @@ spec:
                   value: $(tt.params.gitHubOrg)/$(tt.params.repo-name):$(tt.params.gitRevision)  # docker-repo-location.com/repo:getting-started
         workspaces:
         - name: app-source
-          emptyDir: {}
+          volumeClaimTemplate:
+            metadata:
+              name: $(tt.params.repo-name)-source
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
         - name: config-source
-          emptyDir: {}
+          volumeClaimTemplate:
+            metadata:
+              name: ndtech-staging-source
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi

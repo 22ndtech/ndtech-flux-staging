@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: get-app-version
+  namespace: ndtech-staging
+spec:
+  params:
+  - name: app-name
+  workspaces:
+    - name: app-source
+  results:
+    - name: app-version
+      description: version of the app
+  steps:
+
+  - name: get-app-version
+    image: mikefarah/yq:4
+    workingDir: "$(workspaces.app-source.path)"
+    script: |
+      #!/usr/bin/env sh
+      set -e
+      echo -n `yq e '.deployment.imageVersion' ./charts/$(inputs.params.app-name)/values.yaml` | tee $(results.app-version.path)
+      cat $(results.app-version.path)
