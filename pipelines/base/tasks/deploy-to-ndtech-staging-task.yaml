@@ -6,74 +6,60 @@ metadata:
   namespace: ndtech-staging
 spec:
   params:
-  - name: environment
-  - name: app-name
-  - name: gitHubOrg
-  - name: gitHubRepo
-  - name: gitHubUser
-  - name: appImage
   - name: buildRevision
-  resources:
-    inputs:
-    - name: image-source
-      type: image
+  - name: app-name
+  - name: app-version
   workspaces:
-    - name: app-source
     - name: config-source
   stepTemplate:
     name: stepTemplate
     envFrom:
     - secretRef:
-        name: github-secret
-
+        name: 22ndtech-admin-github-token
+  results:
+    - name: imageVersion
+      description: version of the image
   steps:
 
-  - name: git-checkout
+  - name: checkout-main
     image: alpine/git:v2.26.2
     workingDir: "$(workspaces.config-source.path)"
     script: |
-      git init
-      echo "secretToken"
-      echo $secretToken
-      git remote add origin https://github.com/22ndtech/ndtech-flux-staging.git
-      git fetch --depth 1 origin main
+      #!/usr/bin/env sh
+      set -e
       git checkout main
-      pwd
-      ls
 
   - name: update-yaml
+    image: mikefarah/yq:4
+    workingDir: "$(workspaces.config-source.path)"
+    script: |
+      #!/usr/bin/env sh
+      set -e
+      yq e '.spec.values.deployment.imageVersion = "$(inputs.params.app-version)"' -i ./apps/$(inputs.params.app-name)/$(inputs.params.app-name)-helmrelease.yaml
+
+  - name: commit-updates
     image: alpine/git:v2.26.2
     workingDir: "$(workspaces.config-source.path)"
     script: |
       #!/usr/bin/env sh
       set -e
-      echo "update-yaml"
-      # echo "updating $(inputs.params.environment) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
-      # sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" ./apps/$(inputs.params.app-name)/$(inputs.params.app-name)-helmrelease.yaml
-      # echo "updating all pods in $(inputs.params.environment) to revision $(inputs.params.buildRevision)"
-      # sed -i "s#revision: \"[a-zA-Z0-9]\\+\"#revision: \"$(inputs.params.buildRevision)\"#" app.yaml
-      ls
-      pwd
-
-  - name: commit-push-changes-gitops
-    image: alpine/git:v2.26.2
-    workingDir: "$(workspaces.app-source.path)/$(inputs.params.environment)"
-    script: |
-      #!/usr/bin/env sh
-      set -e
-      git config --global user.email "tekton@tekton.dev"
-      git config --global user.name "Tekton Pipeline"
+      git config --global user.email "admin@22ndtech.com"
+      git config --global user.name "22ndtech Admin"
       git add .
+
+      echo "********** token ***********"
+      echo $token
+      echo "********** app-version ***********"
+
+      git remote set-url origin https://22ndtech-admin:${token}@github.com/22ndtech/ndtech-flux-staging.git
+
+      git remote -v
+
       echo "commit changes"
-      # git commit --allow-empty -m "[tekton] updating $(inputs.params.environment) image to $(inputs.params.buildRevision)"
-      # eval $(ssh-agent)
-      # ssh-add ~/.ssh/id_*
-      # git push origin master
+      git commit --allow-empty -m "[ndtech-staging:tekton] updating ndtech-staging image to app-version:$(inputs.params.app-version) and buildRevision:$(inputs.params.buildRevision)"
+      git push origin main
       
-  - name: wait-for-argocd-rollout
-    image: argoproj/argocd:v1.7.7
+  - name: wait-for-flux-reconcilliation
+    image: fluxcd/flux:1.21.2
     script: |
-      !/usr/bin/env sh
-      set -e
-      argocd app sync $(inputs.params.argo-app-name) --insecure
-      argocd app wait $(inputs.params.argo-app-name) --sync --health --operation --insecure
+      flux -n ndtech-staging reconcile kustomization ndtech-staging
