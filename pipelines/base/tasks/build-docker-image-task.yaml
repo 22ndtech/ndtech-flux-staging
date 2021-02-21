@@ -10,27 +10,27 @@ spec:
     description: |
         The build context used by Kaniko
         (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-    default: $(resources.inputs.source-repo.path)
+    default: .
   - name: pathToDockerFile
     type: string
     description: The path to the dockerfile to build
-    default: $(resources.inputs.source-repo.path)/Dockerfile
+    default: ./Dockerfile
   - name: app-version
     type: string
     description: The version of the app to build also used as the image version
-  resources:
-    inputs:
-      - name: source-repo
-        type: git
-    outputs:
-      - name: builtImage
-        type: image
+  workspaces:
+    - name: app-source
+  results:
+    - name: built-image-url
+      description: url of the image built
   steps:
+
     - name: build-and-push
-      image: gcr.io/kaniko-project/executor:v1.3.0
+      image: gcr.io/kaniko-project/executor:v1.5.0
+      workingDir: "$(workspaces.app-source.path)"
       command:
         - /kaniko/executor
       args:
         - --dockerfile=$(params.pathToDockerFile)
-        - --destination=$(resources.outputs.builtImage.url)
+        - --destination="22ndtech/ndtech-website:0.0.5"
         - --context=$(params.pathToContext)
