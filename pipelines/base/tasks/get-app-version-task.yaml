@@ -21,4 +21,3 @@ spec:
       #!/usr/bin/env sh
       set -e
       echo -n `yq e '.deployment.imageVersion' ./charts/$(inputs.params.app-name)/values.yaml` | tee $(results.app-version.path)
-      cat $(results.app-version.path)

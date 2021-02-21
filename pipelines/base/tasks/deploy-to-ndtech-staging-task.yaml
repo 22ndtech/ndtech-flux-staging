@@ -19,6 +19,11 @@ spec:
   results:
     - name: imageVersion
       description: version of the image
+  volumes:
+  - name: kube-config
+    secret:
+      secretName: kube-config-admin
+
   steps:
 
   - name: checkout-main
@@ -60,6 +65,10 @@ spec:
       git push origin main
       
   - name: wait-for-flux-reconcilliation
-    image: fluxcd/flux:1.21.2
+    image: 22ndtech/22ndtech-k8s-admin-workstation:0.0.1
+    volumeMounts:
+      - name: kube-config
+        mountPath: /.kube
+        readOnly: true
     script: |
       flux -n ndtech-staging reconcile kustomization ndtech-staging
