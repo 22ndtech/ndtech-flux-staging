@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -19,5 +18,5 @@ spec:
     deployment:
       replicas: 1
       namespace: ndtech-staging
-      imageVersion: 0.0.4
+      imageVersion: 0.0.5
       nodeApiUrl: ndtech-staging.www.22ndtech.com
