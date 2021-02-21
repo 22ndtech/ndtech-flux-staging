@@ -18,5 +18,5 @@ spec:
     deployment:
       replicas: 1
       namespace: ndtech-staging
-      imageVersion: 0.0.5
+      imageVersion: 0.0.6
       nodeApiUrl: ndtech-staging.www.22ndtech.com
