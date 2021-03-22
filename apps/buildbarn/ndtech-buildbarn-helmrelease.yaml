@@ -26,3 +26,4 @@ spec:
       schedulerImage: buildbarn/bb-scheduler:20210316T054813Z-6d277d6
       workerUbuntu1604ReplicaCount: 1
       workerUbuntu1604Image: buildbarn/bb-worker:20210316T054813Z-6d277d6
+
